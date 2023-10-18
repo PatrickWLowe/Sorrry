@@ -5,18 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sorrry! Cards</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
-    <h1>Draw a Card</h1>
-    <div id="cardDisplay"></div>
-    <div class="buttons">
-      <button id="drawCardButton" class="button-63" role="button">
-        Draw a Card
-      </button>
+    <div class="container">
+      <h1 class="title">Virtual Sorrry! Card Deck</h1>
+      <div class="row">
+        <button id="drawCardButton" class="button-63" role="button">
+          Draw a Card
+        </button>
 
-      <button id="reshuffleButton" class="button-63" role="button">
-        Reshuffle Deck
-      </button>
+        <button id="reshuffleButton" class="button-63" role="button">
+          Reshuffle Deck
+        </button>
+      </div>
+      <div class="row">
+        <div class="col card-section">
+          <h2 class="section-title">Draw a Card</h2>
+          <div id="cardDisplay" class="card-container"></div>
+        </div>
+        <div class="col discard-section">
+          <h2 class="section-title">Discard Pile</h2>
+          <div id="discardPileDisplay" class="discard-container">
+            <div class="card-stack">
+              <!-- Discard cards will be added here dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="script/deck.js"></script>
   </body>

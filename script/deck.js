@@ -1,4 +1,3 @@
-// Define the types of Sorry! cards
 const sorryCards = [
   { name: "Move Forward 1 Space", action: "MoveForward", value: 1 },
   { name: "Move Forward 2 Spaces", action: "MoveForward", value: 2 },
@@ -29,7 +28,10 @@ const sorryCards = [
   },
 ];
 
-// Function to shuffle the deck
+const deckOfSorryCards = [];
+const discardPile = [];
+const maxDiscardPileSize = 3; // Maximum number of cards to display in the discard pile
+
 function shuffleDeck(deck) {
   for (let i = deck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -37,42 +39,51 @@ function shuffleDeck(deck) {
   }
 }
 
-// Create a deck of Sorry! cards with 5 of each kind
-const deckOfSorryCards = [];
-for (const card of sorryCards) {
-  for (let i = 0; i < 5; i++) {
-    deckOfSorryCards.push(card);
-  }
-}
-
-// Shuffle the deck
-shuffleDeck(deckOfSorryCards);
-
-// Function to draw a card from the deck
 function drawCard(deck) {
   if (deck.length === 0) {
     console.log("No more cards in the deck.");
     return null;
   }
-  return deck.pop();
+  const randomIndex = Math.floor(Math.random() * deck.length);
+  return deck.splice(randomIndex, 1)[0]; // Draw a card randomly
 }
 
-// Get references to HTML elements
 const cardDisplay = document.getElementById("cardDisplay");
-const drawCardButton = document.getElementById("drawCardButton");
+const discardPileDisplay = document.getElementById("discardPileDisplay"); // Get the discard pile element
+const discardStack = document.querySelector(".card-stack"); // Get the card stack container
 
-// Draw a card and display it when the button is clicked
+let currentCard = null;
+
 drawCardButton.addEventListener("click", function () {
-  const drawnCard = drawCard(deckOfSorryCards);
+  if (currentCard) {
+    if (discardPile.length >= maxDiscardPileSize) {
+      // Remove the oldest card from the display
+      discardStack.removeChild(discardStack.lastChild);
+    }
 
-  if (drawnCard) {
+    const cardContainer = document.createElement("div");
+    cardContainer.classList.add("card-container");
+    cardContainer.innerHTML = `
+      <p class="topnumber">${currentCard.value}</p>
+      <p class="topdesc">${currentCard.name}</p>
+      <h1 class="center">${currentCard.value}</h1>
+      <p class="btmdesc">${currentCard.name}</p>
+      <p class="btmnumber">${currentCard.value}</p>
+    `;
+
+    discardStack.prepend(cardContainer); // Add the current card to the top of the stack
+  }
+
+  currentCard = drawCard(deckOfSorryCards);
+
+  if (currentCard) {
     cardDisplay.innerHTML = `<div class="card-container">
-      <p class="topnumber">${drawnCard.value}</p>
-      <p class="topdesc">${drawnCard.name}</p>
-      <h1 class="center">${drawnCard.value}</h1>
-      <p class="btmdesc">${drawnCard.name}</p>
-      <p class="btmnumber">${drawnCard.value}</p>
-    </div>`;
+        <p class="topnumber">${currentCard.value}</p>
+        <p class="topdesc">${currentCard.name}</p>
+        <h1 class="center">${currentCard.value}</h1>
+        <p class "btmdesc">${currentCard.name}</p>
+        <p class="btmnumber">${currentCard.value}</p>
+      </div>`;
   }
 });
 
@@ -86,6 +97,8 @@ reshuffleButton.addEventListener("click", function () {
       }
     }
     shuffleDeck(deckOfSorryCards);
+    discardPile.length = 0; // Clear the discard pile
+    discardStack.innerHTML = ""; // Clear the display of discarded cards
     alert("Deck refilled and reshuffled!");
   } else {
     shuffleDeck(deckOfSorryCards);
